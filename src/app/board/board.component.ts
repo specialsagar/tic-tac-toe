@@ -19,6 +19,7 @@ export class BoardComponent implements OnInit {
   msg1:string; 
   msg2:string;
   isOver:boolean;
+  isBotThinking:boolean = false;
 
   constructor(private snackBar: MatSnackBar) {}
 
@@ -40,7 +41,11 @@ export class BoardComponent implements OnInit {
 
   }
 
-  updateCell(row:number,col:number) {
+  updateCell(row:number,col:number, inturruptUpdate) {
+    if (inturruptUpdate) {
+      this.snackBar.open("Bot is playing", "ok");
+      return;
+    }
     if(!this.isOver){
       if(this.grid[row][col].isTileFree){
         this.moves++;
@@ -51,10 +56,17 @@ export class BoardComponent implements OnInit {
         this.checkDiagonals();
         this.changePlayer(); 
 
+
         if(this.moves == (this.boardDimension*this.boardDimension) && !this.isOver){
           this.snackBar.open('Draw','Ok');
           this.isOver = true;
-        }       
+        } else if (this.currentPlayer == this.bot) {
+          this.isBotThinking = true;
+          setTimeout(() => {
+            this.playComputer();
+            this.isBotThinking = false;
+          }, 1500);
+        }
       }
     } else {
       this.snackBar.open('Game ended. Please restart','Ok');
@@ -111,5 +123,19 @@ export class BoardComponent implements OnInit {
   endGame() {
     this.isOver=true;
     this.snackBar.open(`Winner ${this.currentPlayer}`, 'Ok');
+  }
+
+  playComputer() {
+    let possibleMoves = [];
+    for(let i=0;i<this.boardDimension;i++){
+      for(let j=0;j<this.boardDimension;j++){
+        if (this.grid[i][j].isTileFree) {
+          possibleMoves.push([i,j]);
+        }
+      }
+    }
+    
+    const selectedMove = possibleMoves[Math.floor(Math.random() * possibleMoves.length)];
+    this.updateCell(selectedMove[0], selectedMove[1], false);
   }
 }

@@ -4,9 +4,11 @@
     <button class="btn btn-primary" (click)="initGame()">Start Game</button>
   </div>
 
+  <div [style.visibility]="isBotThinking ? 'visible':'hidden'">Please wait for bot turn to finish</div>
+
   <div class="flex">
     <div class="row" *ngFor="let cell of grid;index as i">
-      <div *ngFor="let c of cell; index as j" (click)="updateCell(i,j)" class="board-cell">
+      <div *ngFor="let c of cell; index as j" (click)="updateCell(i,j, isBotThinking)" class="board-cell">
         <span *ngIf="c.player=='Player'"><mat-icon>check_circle_outline</mat-icon></span>
         <span *ngIf="c.player=='Bot'"><mat-icon>close</mat-icon></span>
       </div>

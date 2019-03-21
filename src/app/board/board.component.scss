@@ -1,0 +1,21 @@
+.flex {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    .row {
+        display: flex;
+        flex-direction: row;
+        .board-cell {
+            height: 30px;
+            width: 30px;
+            border: 1px solid grey;
+            border-top: none;
+            cursor: pointer;
+        }
+        &:first-child .board-cell {
+            border-top: 1px solid grey;
+        }
+    }
+
+}

@@ -1,0 +1,17 @@
+<div class="container">
+  <div class="">   
+    <input type="number" min="3" [(ngModel)]="boardDimension" placeholder="Enter dimension">
+    <button class="btn btn-primary" (click)="initGame()">Start Game</button>
+  </div>
+
+  <div class="flex">
+    <div class="row" *ngFor="let cell of grid;index as i">
+      <div *ngFor="let c of cell; index as j" (click)="updateCell(i,j)" class="board-cell">
+        <span *ngIf="c.player=='Player'"><mat-icon>check_circle_outline</mat-icon></span>
+        <span *ngIf="c.player=='Bot'"><mat-icon>close</mat-icon></span>
+      </div>
+    </div>
+    
+  </div>
+
+</div>
